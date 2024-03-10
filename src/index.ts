@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from '@apollo/server/standalone';
+import {gql} from 'graphql-tag'
 
 const doctorsData = [
   {
@@ -14,7 +15,7 @@ const doctorsData = [
   },
 ];
 
-const typeDefs = `#graphql
+const typeDefs = gql`
 type Doctor {
   id: String
   name: String
