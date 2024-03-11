@@ -1,24 +1,21 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-type Track {
-  id: ID!
+type Film {
+  id: String!
   title: String!
-  author: Author!
-  thumbnail: String
+  people: [People!]!
 }
 
-type Author {
-  id: ID!
+type People {
+  id: String!
   name: String!
-  photo: String
+  eyeColor: String
+  films: [Film!]!
 }
 
 type Query {
-
-  divide(number1: Int!, number2: Int!): Float
-  multiply(number1: Int!, number2: Int!): Float
-  closestColor(hexa: String!): String
-  getTracks: [Track!]!
+  getFilms: [Film!]!
+  getPeople: [People!]!
 }
 `
