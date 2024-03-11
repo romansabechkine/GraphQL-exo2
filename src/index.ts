@@ -1,25 +1,14 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { GraphQLError } from "graphql";
 import {gql} from 'graphql-tag'
-
-const doctorsData = [
-  {
-    id: "1",
-    name: 'Samia Mekame',
-    speciality: 'OPHTALMOLOGIST',
-  },
-  {
-    id: "2",
-    name: 'Catherine Bedoy',
-    speciality: 'PSYCHOLOGIST',
-  },
-];
+import { resolvers } from "./resolvers.js";
 
 const typeDefs = gql`
 type Doctor {
   id: String
   name: String
-  speciality: SPECIALITY
+  speciality: Speciality
   addresses: Address
 }
 
@@ -27,34 +16,19 @@ type Address {
   streetName: String
 }
 
-enum SPECIALITY {
+enum Speciality {
   PSYCHOLOGIST
   OPHTALMOLOGIST
 }
 
 type Query {
-  doctors: [Doctor]
+  doctors(specialities: [Speciality!]): [Doctor]
   doctor(id: ID!): Doctor
+  divide(number1: Int!, number2: Int!): Float
+  multiply(number1: Int!, number2: Int!): Float
+  closestColor(hexa: String!): String
 }
 `
-
-const resolvers = {
-  Query: {
-    doctors: (parent, args, context, info) => {
-      return doctorsData
-    },
-    doctor: (parent, args, context, info) => {
-      const {id} = args
-      return doctorsData.find(d => d.id === id)
-    }
-  },
-  Doctor: {
-    addresses: (parent, args, context, info) => {
-      console.log(parent)
-      return {streetName: `${parent.id} street`}
-    }
-  }
-}
 
 const server = new ApolloServer({
   typeDefs,
